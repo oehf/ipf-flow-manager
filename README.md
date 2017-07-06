@@ -10,6 +10,8 @@ It stores each incoming message as a flow object in a database and updates the f
 If the message was processed and has been successfully delivered to a destination system, an acknowledgement (ACK) is stored with that particular message flow.
 If the processing of a message has failed, a negative acknowledgement (NAK) is stored with that message flow.
 
+<img src="https://github.com/oehf/ipf-flow-manager/blob/master/documentation/images/flowmgr.JPG">
+
 With the flow manager you can also replay messages. A replay re-submits the initially stored message.
 In order to avoid duplicate delivery of messages to destination systems you can install duplicate filters.
 These recognize replayed messages that have already been delivered to an external destination and filter them out.
@@ -23,6 +25,8 @@ However, the duplicate filtering functionality can be turned on and off for each
 The flow manager can also store string representations of messages that enter and leave an integration solution.
 These string representations are rendered at the flow interceptors.
 Application developers can provide custom renderers if needed, i.e. message rendering can be customized when a message flow is initialized, acknowledged or negatively acknowledged.
+
+<img src="https://github.com/oehf/ipf-flow-manager/blob/master/documentation/images/flowmanager_rendering.jpg">
 
 Stored string representations of inbound- and outbound messages (also called incoming- and outgoing messages) allow administrators and auditors to keep track which messages entered and left the system.
 These string representations can be visualized via a generic JMX client.
