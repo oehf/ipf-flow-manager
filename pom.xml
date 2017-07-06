@@ -8,11 +8,12 @@
 
     <properties>
         <assembly-plugin-version>2.6</assembly-plugin-version>
-        <bundle-plugin-version>2.0.1</bundle-plugin-version>
+        <bundle-plugin-version>3.0.1</bundle-plugin-version>
         <compiler-plugin-version>3.5.1</compiler-plugin-version>
         <gpg-plugin-version>1.6</gpg-plugin-version>
         <groovy-eclipse-batch-version>2.4.3-01</groovy-eclipse-batch-version>
         <groovy-eclipse-compiler-version>2.9.2-01</groovy-eclipse-compiler-version>
+        <jar-plugin-version>2.6</jar-plugin-version>
         <javadocs-plugin-version>2.10.4</javadocs-plugin-version>
         <nexus-staging-plugin-version>1.6.3</nexus-staging-plugin-version>
         <release-plugin-version>2.5.3</release-plugin-version>
@@ -42,6 +43,27 @@
         <slf4j-version>1.7.21</slf4j-version>
         <spring-version>4.3.9.RELEASE</spring-version>
         <junit-version>4.12</junit-version>
+
+        <!-- Default Bundle Properties -->
+        <osgi.export.pkg>*</osgi.export.pkg>
+        <osgi.import.pkg>org.slf4j.*;version="[1.6,2)",*</osgi.import.pkg>
+        <osgi.dynamic.import.pkg />
+        <osgi.private.pkg />
+        <osgi.bundle.activator />
+        <osgi.bundle.classpath />
+        <osgi.embed.dependency />
+        <osgi.fragment.host />
+        <osgi.require.bundle />
+        <osgi.spring.context />
+        <ipf.extension.classes />
+        <ipf.extension.beans />
+        <eclipse.supplement.bundle />
+        <osgi.bundle.vendor>Open eHealth Foundation</osgi.bundle.vendor>
+        <osgi.bundle.license>Apache License, Version
+            2.0;url=http://www.apache.org/licenses/LICENSE-2.0;description=OpenSource license provided by the Apache
+            foundation
+        </osgi.bundle.license>
+        <osgi.bundle.category>healthcare</osgi.bundle.category>
     </properties>
 
     <url>https://github.com/oehf/ipf-flow-manager</url>
@@ -377,6 +399,14 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${jar-plugin-version}</version>
+                    <configuration>
+                        <useDefaultManifestFile>true</useDefaultManifestFile>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${release-plugin-version}</version>
                 </plugin>
@@ -392,6 +422,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${bundle-plugin-version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -434,6 +469,67 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${bundle-plugin-version}</version>
+                <extensions>false</extensions>
+                <configuration>
+                    <unpackBundle>true</unpackBundle>
+                    <manifestLocation>META-INF</manifestLocation>
+                    <instructions>
+                        <!-- remove the qualifier from ANY versioning rule -->
+                        <_versionpolicy>"$(version;===;$(@))"</_versionpolicy>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                        <Export-Package>${osgi.export.pkg}</Export-Package>
+                        <Import-Package>${osgi.import.pkg}</Import-Package>
+                        <DynamicImport-Package>${osgi.dynamic.import.pkg}</DynamicImport-Package>
+                        <Private-Package>${osgi.private.pkg}</Private-Package>
+                        <Bundle-Activator>${osgi.bundle.activator}</Bundle-Activator>
+                        <Bundle-ClassPath>${osgi.bundle.classpath}</Bundle-ClassPath>
+                        <Embed-Dependency>${osgi.embed.dependency}</Embed-Dependency>
+                        <Fragment-Host>${osgi.fragment.host}</Fragment-Host>
+                        <Require-Bundle>${osgi.require.bundle}</Require-Bundle>
+                        <Bundle-Category>${osgi.bundle.category}</Bundle-Category>
+
+                        <!-- project specifics -->
+                        <Bundle-Description>${project.description}</Bundle-Description>
+                        <Bundle-Vendor>${osgi.bundle.vendor}</Bundle-Vendor>
+                        <Bundle-License>${osgi.bundle.license}</Bundle-License>
+
+                        <!-- custom headers (not according to OSGi-Spec standard) -->
+                        <Spring-Context>${osgi.spring.context}</Spring-Context>
+                        <Extension-Classes>${ipf.extension.classes}</Extension-Classes>
+                        <Extension-Beans>${ipf.extension.beans}</Extension-Beans>
+                        <Eclipse-SupplementBundle>${eclipse.supplement.bundle}</Eclipse-SupplementBundle>
+
+                        <Build-Time>$(now)</Build-Time>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>bundle-install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>bundle-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>

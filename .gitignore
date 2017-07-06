@@ -1,0 +1,15 @@
+*.iml
+*.iws
+*.ipr
+MANIFEST.MF
+derby.log
+target
+tomcat.8080
+activemq-data
+id_file
+.idea
+.classpath
+.project
+.settings/
+assembly/bin
+work
