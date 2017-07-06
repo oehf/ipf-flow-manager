@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ipf-flow-manager-osgi</artifactId>
+    <name>IPF Flow Manager OSGi</name>
+    <description>IPF Flow Management</description>
+    
+    <parent>
+        <groupId>org.openehealth.ipf.flow</groupId>
+        <artifactId>ipf-flow-manager</artifactId>
+        <version>4.0-SNAPSHOT</version>
+    </parent>
+    
+    <properties>
+        <osgi.export.pkg />
+        <osgi.import.pkg>
+            org.aopalliance.aop,
+            org.apache.commons.dbcp,
+            org.hibernate.jdbc,
+            org.hibernate.proxy,
+            org.springframework.aop,
+            org.springframework.aop.framework,
+            org.springframework.jmx.export,
+            org.springframework.jmx.export.annotation,
+            org.springframework.jmx.export.assembler,
+            org.springframework.jmx.export.naming,
+            org.springframework.transaction,
+            org.openehealth.ipf.commons.flow,
+            org.openehealth.ipf.commons.flow.config,
+            org.openehealth.ipf.commons.flow.jmx,
+            org.openehealth.ipf.commons.flow.repository,
+            org.openehealth.ipf.commons.flow.transfer
+        </osgi.import.pkg>
+        <osgi.fragment.host>
+            org.openehealth.ipf.commons.ipf-commons-flow
+        </osgi.fragment.host>
+        <!-- 
+            Needed because package org.apache.derby.jdbc
+            is split across these two bundles.
+         -->
+        <osgi.require.bundle>
+            org.apache.servicemix.bundles.derby
+        </osgi.require.bundle>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openehealth.ipf.flow</groupId>
+            <artifactId>ipf-flow-manager-camel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.osgi</groupId>
+            <artifactId>spring-osgi-core</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>org.springframework.aop</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>org.springframework.context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>org.springframework.beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>org.springframework.core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

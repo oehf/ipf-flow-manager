@@ -1,0 +1,5 @@
+moduleName=FlowExtension
+moduleVersion=3.4
+moduleFactory=org.openehealth.ipf.platform.camel.flow.extend.ExtensionModuleFactory
+extensionClasses=org.openehealth.ipf.platform.camel.flow.extend.FlowExtensionModule
+staticExtensionClasses=
